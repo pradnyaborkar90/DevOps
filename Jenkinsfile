@@ -2,20 +2,42 @@ pipeline {
    agent any
 
    stages {
-      stage('Build') {
+      stage('Installation') {
         steps {
-          echo 'Building...'
+          echo 'Installing required packages'
           echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
+          sudo apt-get install wget unzip -y
+          wget  https://releases.hashicorp.com/terraform/0.13.5/terraform_0.13.5_linux_amd64.zip
+          unzip terraform_0.13.5_linux_amd64.zip
+          mv terraform /usr/local/bin
+          echo "Installation Completed"
         }
    }
-   stage('Test') {
+      
+  stage ('Verification') {
+         steps {
+            echo $(terraform version)
+         }
+   }    
+   stage('Initialization') {
      steps {
-        echo 'Testing...'
+        echo 'Initializing Terraform....'
+        cd terraform/
+        terraform init
      }
    }
-   stage('Deploy') {
+   stage('Planning') {
      steps {
-       echo 'Deploying...'
+       echo 'Planning Terraform Code...'
+       pwd
+       terraform plan
+     }
+   }
+      stage('Deploying') {
+     steps {
+       echo 'Applying Terraform Code...'
+       pwd
+       terrform apply
      }
    }
   }
