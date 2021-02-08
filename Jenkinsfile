@@ -16,7 +16,7 @@ pipeline {
       
   stage ('Verification') {
          steps {
-            echo $(terraform version)
+            terraform version
          }
    }    
    stage('Initialization') {
