@@ -25,8 +25,9 @@ pipeline {
    }    
    stage('Initialization') {
      steps {
-        sh '''
+        
         echo 'Initializing Terraform....'
+        sh '''
         cd terraform/
         terraform init
         '''
@@ -34,8 +35,9 @@ pipeline {
    }
    stage('Planning') {
      steps {
-       sh '''
+       
        echo 'Planning Terraform Code...'
+       sh '''
        pwd
        terraform plan
        '''
@@ -43,8 +45,9 @@ pipeline {
    }
       stage('Deploying') {
      steps {
-       sh '''
+       
        echo 'Applying Terraform Code...'
+       sh '''
        pwd
        terrform apply
        '''
